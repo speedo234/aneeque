@@ -155,17 +155,20 @@ public class SignUpCmd {
     }
 
 
-
     @Override
     public String toString() {
-        return "User{" +
-                ", username='" + username + '\'' +
+        return "SignUpCmd{" +
+                "username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", confirmPassword='" + confirmPassword + '\'' +
                 ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", active=" + active +
+                ", dob=" + dob +
+                ", dor=" + dor +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", rolez=" + rolez +
                 '}';
     }
-
-
 }

@@ -16,75 +16,30 @@ import java.util.Objects;
  */
 
 @Entity
-//@Embeddable
-public class Rolez {
+public abstract class Rolez {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
-    private String roleName;
-    private String privilege;
-    private boolean active;
-
+    protected String roleName;
+    protected String privilege;
+    protected boolean active;
 
     @ManyToOne
-    private User user;
+    protected User user;
 
 
-    public Rolez(String roleName, String privilege, boolean active) {
-        this.roleName = roleName;
-        this.privilege = privilege;
-        this.active = active;
-    }
+    public abstract String getRoleName();
 
-    public Rolez() {
+    protected abstract void setRoleName(String roleName);
 
-    }
+    public abstract String getPrivilege();
 
+    protected abstract void setPrivilege(String privilege);
 
-    public String getRoleName() {
-        return roleName;
-    }
+    public abstract boolean isActive();
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
+    protected abstract void setActive(boolean active);
 
-    public String getPrivilege() {
-        return privilege;
-    }
-
-    public void setPrivilege(String privilege) {
-        this.privilege = privilege;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    @Override
-    public String toString() {
-        return "Rolez{" +
-                "roleName='" + roleName + '\'' +
-                ", privilege='" + privilege + '\'' +
-                '}';
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Rolez)) return false;
-        Rolez rolez = (Rolez) o;
-        return Objects.equals(id, rolez.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

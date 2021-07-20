@@ -63,7 +63,6 @@ public class UserRestController {
                 throw new ValidationException(fieldError.getDefaultMessage());
             }
         }
-
         customUtil.isValidEmail(signUpCmd.getEmail());
         userUtil.checkPasswordsMatch(signUpCmd.getPassword(), signUpCmd.getConfirmPassword());
         userUtil.setDefaultUserRole(signUpCmd);

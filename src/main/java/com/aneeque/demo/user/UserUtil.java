@@ -3,6 +3,7 @@ package com.aneeque.demo.user;
 
 import com.aneeque.demo.api.util.CustomUtil;
 import com.aneeque.demo.exception.ValidationException;
+import com.aneeque.demo.role.DefaultRole;
 import com.aneeque.demo.role.Rolez;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,15 +37,10 @@ public class UserUtil {
     }
 
 
-
-
     public void setDefaultUserRole(SignUpCmd signUpCmd){
         List<Rolez> rolezList;
         rolezList = new ArrayList<>();
-        Rolez rolez = new Rolez();
-        rolez.setActive(true);
-        rolez.setPrivilege("user");
-        rolez.setRoleName("ROLE_USER");
+        Rolez rolez = new DefaultRole();
         rolezList.add(rolez);
         signUpCmd.setRolez(rolezList);
     }
@@ -52,23 +48,13 @@ public class UserUtil {
 
     public void setUserRole(UserCmd userCmd ){
         List<Rolez> rolezList = new ArrayList<>();
-        Rolez rolez = new Rolez();
-        rolez.setActive(true);
-        rolez.setPrivilege("user");
-        rolez.setRoleName("ROLE_USER");
+        Rolez rolez = new DefaultRole();
         rolezList.add(rolez);
         userCmd.setRolez(rolezList);
     }
 
 
 
-
-    public void checkIfDoBUpdate(UserCmd userCmd, User user){
-        if(userCmd.getDob() != null && user.getDob() != null && (!user.getDob().equals(userCmd.getDob()))){
-            userCmd.setDob(null);
-            throw new ValidationException("You cannot change your Date of Birth after initial update");
-        }
-    }
 
 
 

@@ -97,6 +97,7 @@ public class UserServiceImpl implements UserService {
         newRegisteredUser.setDor(LocalDate.now());
         newRegisteredUser.setActive(signUpCmd.isActive());
         newRegisteredUser.setRolez(signUpCmd.getRolez());
+        newRegisteredUser.setActive(signUpCmd.isActive());
         /*return*/ userRepository.save(newRegisteredUser);
     }
 
@@ -158,13 +159,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser2(SignUpCmd signUpCmd) throws ApplicationException {
         User user = getUserByUsername(signUpCmd.getUsername());
-        if (user != null){
+        if (user != null)
             throw new ApplicationException("user "+signUpCmd.getUsername()+" already exists on the system");
-        }
         user = getUserByEmail(signUpCmd.getEmail());
-        if (user != null){
+        if (user != null)
             throw new ApplicationException("email "+signUpCmd.getEmail()+" already exists on the system");
-        }
+        signUpCmd.setActive(true);
         addUser(signUpCmd);
     }
 
