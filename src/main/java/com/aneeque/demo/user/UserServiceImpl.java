@@ -39,9 +39,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-    //  private PasswordEncoder passwordEncoder;
 
-//    @Autowired
+    @Autowired
     UserRepository userRepository;
 
 
@@ -57,9 +56,10 @@ public class UserServiceImpl implements UserService {
     public UserServiceImpl() {
     }
 
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+//    @Autowired
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
 
@@ -81,11 +81,11 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUsernameOrEmail(username, email);
 
         if(user == null)
-            throw new AuthenticationException("invalid username");
+            throw new EntityNotFoundException("username not found");
 
             boolean isCorrectPassword = bCryptPasswordEncoder.matches(password, user.getPassword());
             if (!isCorrectPassword)
-                throw new AuthenticationException("invalid password");
+                throw new AuthenticationException("incorrect password");
 
         return user;
     }

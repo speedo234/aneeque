@@ -6,49 +6,116 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class UserServiceImplTest {
 
     @Mock
-    UserRepository userRepository;
+    private UserRepository userRepository;
+
+    @Mock
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @InjectMocks
-    UserServiceImpl userService;
+    private UserServiceImpl userService;
+
+    private String username = null;
+    private String password = null;
+    private String email = null;
+
+    private User user = null;
 
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-
-        userRepository = mock(UserRepository.class);
-        userService = new UserServiceImpl();
-
+        username = "glory";
+        password = "tar565";
+        email = "glory@yahoo.com";
+        user = new User(username, password, email);
+        userService = new UserServiceImpl(userRepository, bCryptPasswordEncoder);
     }
 
     @Test
     void getUserByUsername() {
+        //when
+        when(userRepository.findByUsername(username)).thenReturn(user);
+        User actual = userService.getUserByUsername(username);
+        User expected = user;
+        //then
+        assertThat(expected).isEqualTo(actual);
     }
 
     @Test
     void getUserByEmail() {
+        //when
+        when(userRepository.findByEmail(email)).thenReturn(user);
+        User actual = userService.getUserByEmail(email);
+        User expected = user;
+        //then
+        assertThat(expected).isEqualTo(actual);
     }
 
     @Test
     void getUserByUsernameAndPassword() {
+        //when
+        when(userRepository.findByUsernameOrEmail(username, username)).thenReturn(user);
+        when(bCryptPasswordEncoder.matches(password, password)).thenReturn(true);
+        User actual = userService.getUserByUsernameAndPassword(username, password);
+        User expected = user;
+        //then
+        assertThat(expected).isEqualTo(actual);
     }
 
     @Test
     void addUser() {
+        //given
+        SignUpCmd signUpCmd = new SignUpCmd();
+        signUpCmd.setUsername(username);
+        signUpCmd.setPassword(password);
+        signUpCmd.setEmail(email);
+        //when
+        when(userRepository.save(user)).thenReturn(user);
+        User actual = userService.addUser(signUpCmd);
+        User expected = user;
+        //then
+        assertThat(expected).isEqualTo(actual);
     }
 
     @Test
     void addUser2() {
+        //given
+        SignUpCmd signUpCmd = new SignUpCmd();
+        signUpCmd.setUsername(username);
+        signUpCmd.setPassword(password);
+        signUpCmd.setEmail(email);
+        //when
+        when(userService.getUserByUsername(username)).thenReturn(null);
+        when(userService.addUser(signUpCmd)).thenReturn(user);
+        User actual = userService.addUser2(signUpCmd);
+        User expected = user;
+        //then
+        assertThat(expected).isEqualTo(actual);
     }
 
     @Test
     void getAllUsers() {
+        //given
+        List<User> userList = new ArrayList<>();
+        userList.add(user);
+        //when
+        when(userRepository.findAll()).thenReturn(userList);
+        List<User> actual = userService.getAllUsers();
+        List<User> expected = userList;
+        //then
+        assertThat(expected).isEqualTo(actual);
     }
 }

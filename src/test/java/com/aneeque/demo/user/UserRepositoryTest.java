@@ -57,7 +57,6 @@ class UserRepositoryTest {
         //when
         User actual = userRepository.findByUsername(username);
         String expected = username;
-
         //then
         assertThat(expected).isEqualTo(actual.getUsername());
     }
@@ -68,7 +67,6 @@ class UserRepositoryTest {
         //when
         User actual = userRepository.findByEmail(email);
         String expected = email;
-
         //then
         assertThat(expected).isEqualTo(actual.getEmail());
     }
@@ -80,11 +78,9 @@ class UserRepositoryTest {
         User actual = userRepository.findByUsernameOrEmail(username, email);
         String expectedUsername = username;
         String expectedEmail = email;
-
         //then
         assertThat(expectedUsername).isEqualTo(actual.getUsername());
         assertThat(expectedEmail).isEqualTo(actual.getEmail());
-
     }
 
 }
