@@ -4,6 +4,7 @@ package com.aneeque.demo.user;
 import com.aneeque.demo.api.util.CustomUtil;
 import com.aneeque.demo.exception.ApplicationException;
 import com.aneeque.demo.exception.EntityNotFoundException;
+import com.aneeque.demo.exception.ValidationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -68,24 +69,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUsernameAndPassword(String username, String password) {
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectNode returnObjectNode = mapper.createObjectNode();
-
         String email = username;//email may be passed as the username.
         User user = userRepository.findByUsernameOrEmail(username, email);
 
-        try{
-            logger.info("db password===---<> {} ", user.getPassword());
+        if(user == null)
+            throw new ValidationException("invalid username");
+
             boolean isCorrectPassword = bCryptPasswordEncoder.matches(password, user.getPassword());
-            logger.info("isCorrectPassword---> {} ", isCorrectPassword);
-            if (isCorrectPassword) {
-                return user;
-            }
-        }catch(NullPointerException npe){
-            logger.info("login user is probably null...");
-            npe.printStackTrace();
-        }
-        return null;
+            if (!isCorrectPassword)
+                throw new ValidationException("invalid password");
+
+        return user;
     }
 
     @Override

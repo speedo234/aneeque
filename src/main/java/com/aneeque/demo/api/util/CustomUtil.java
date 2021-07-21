@@ -51,7 +51,7 @@ public class CustomUtil {
     public String getFileExtensionFromFilePath(String filename) {
         return Optional.ofNullable(filename)
                 .filter(f -> f.contains("."))
-                .map(f -> f.substring(filename.lastIndexOf(".") + 1)).get().toString();//convert Optional to normal String object before returning...
+                .map(f -> f.substring(filename.lastIndexOf(".") + 1)).get();//convert Optional to normal String object before returning...
     }
 
 
