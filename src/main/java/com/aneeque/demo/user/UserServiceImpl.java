@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     //  private PasswordEncoder passwordEncoder;
 
-    @Autowired
+//    @Autowired
     UserRepository userRepository;
 
 
@@ -51,6 +51,17 @@ public class UserServiceImpl implements UserService {
 
     @Value("${default.user.role.name}")
     private String defaultUserRole;
+
+
+
+    public UserServiceImpl() {
+    }
+
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
 
     @Override
     public User getUserByUsername(String username) {

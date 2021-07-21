@@ -9,9 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,18 +20,31 @@ public class SignUpCmd {
 
     @Pattern(regexp = "^[a-zA-Z0-9_]*$", message = "Invalid character in username")
     @Column(unique = true)
+    @NotBlank(message = "Username field is empty")
+    @NotEmpty(message = "Username field is empty")
+    @Size(min = 4, max = 15, message = "Username must be between 4 and 15 characters")
     private String username;
 
-//    @JsonIgnore
+
+    @NotBlank(message = "Password field is empty")
+    @NotEmpty(message = "Password field is empty")
+    @Size(min = 4, max = 15, message = "Password must be between 4 and 15 characters")
     private String password;
 
-//    @JsonIgnore
+
+    @NotBlank(message = "Confirm Password field is empty")
+    @NotEmpty(message = "Confirm Password field is empty")
+    @Size(min = 4, max = 15, message = "Confirm Password must be between 4 and 15 characters")
     private String confirmPassword;
 
     @Column(unique=true)
+    @NotBlank(message = "Email field is empty")
+    @NotEmpty(message = "Email field is empty")
+    @Size(min = 4, max = 15, message = "Email must be between 4 and 15 characters")
     private String email;
 
     private boolean active;
+
 
     @PastOrPresent(message = "Date of Registration Must be a Past or Present Date.")
     @DateTimeFormat(pattern = "dd-MM-yyyy'T'HH:mm:ss")
