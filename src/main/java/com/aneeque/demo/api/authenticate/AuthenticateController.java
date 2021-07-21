@@ -76,24 +76,4 @@ public class AuthenticateController {
         return ResponseEntity.ok(objectNode);
     }
 
-
-
-    @PostMapping("/validate/token")
-    public ResponseEntity<?> validAuthenticationToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer")) {
-            bearerToken = bearerToken.substring(7, bearerToken.length());
-        }
-//        String username = new JwtUtil().extractUsername(bearerToken);
-        boolean isTokenExpired = jwtUtil.isTokenExpired(bearerToken);
-        ObjectMapper mapper = new ObjectMapper();
-        ObjectNode objectNode = mapper.createObjectNode();
-        if (!isTokenExpired) {
-            objectNode.put("success", "token is valid");
-            return ResponseEntity.ok(objectNode.put("success", "token is valid"));
-        } else {
-            throw new AuthenticationException("token is invalid");
-        }
-    }
-
 }

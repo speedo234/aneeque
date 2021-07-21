@@ -4,20 +4,20 @@ import com.aneeque.demo.exception.ApplicationException;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 public interface UserService {
 
-    public User getUserByUsername(String username);
+    User getUserByUsername(String username);
 
-    public User getUserByEmail(String email);
+    User getUserByEmail(String email);
 
-    public User getUserByPhoneNumber(String phoneNumber);
+    User getUserByUsernameAndPassword(String username, String password);
 
-    public User getUserByUsernameAndPassword(String username, String password);
+    User addUser(SignUpCmd signUpCmd);
 
-    public User updateUser(UserCmd userRequestCmd);
+    User addUser2(SignUpCmd signUpCmd) throws ApplicationException;
 
-    public void addUser(SignUpCmd signUpCmd);
-
-    public void addUser2(SignUpCmd signUpCmd) throws ApplicationException;
+    List<User> getAllUsers();
 
 }

@@ -2,6 +2,8 @@ package com.aneeque.demo.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByUsername(String username);
@@ -10,9 +12,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByEmail(String email);
 
-    User findByPhoneNumber(String phoneNumber);
-
     User findByUsernameAndPassword(String username, String password);
-
 
 }

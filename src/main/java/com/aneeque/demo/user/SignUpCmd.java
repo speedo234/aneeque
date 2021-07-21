@@ -33,21 +33,12 @@ public class SignUpCmd {
     @Column(unique=true)
     private String email;
 
-    private String firstName;
-    private String lastName;
-
     private boolean active;
-
-    @Past(message = "Date of Birth Must be a Past Date.")
-    @DateTimeFormat(pattern = "dd-MM-yyyy'T'HH:mm:ss")
-    private LocalDate dob;
 
     @PastOrPresent(message = "Date of Registration Must be a Past or Present Date.")
     @DateTimeFormat(pattern = "dd-MM-yyyy'T'HH:mm:ss")
     private LocalDate dor;
 
-    @Column(unique=true)
-    private String phoneNumber;
 
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Rolez> rolez;
@@ -61,8 +52,6 @@ public class SignUpCmd {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
     }
 
 
@@ -90,22 +79,6 @@ public class SignUpCmd {
         this.email = email;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public List<Rolez> getRolez() {
         return rolez;
     }
@@ -122,28 +95,12 @@ public class SignUpCmd {
         this.active = active;
     }
 
-    public LocalDate getDob() {
-        return dob;
-    }
-
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
-    }
-
     public LocalDate getDor() {
         return dor;
     }
 
     public void setDor(LocalDate dor) {
         this.dor = dor;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public String getConfirmPassword() {
@@ -162,12 +119,8 @@ public class SignUpCmd {
                 ", password='" + password + '\'' +
                 ", confirmPassword='" + confirmPassword + '\'' +
                 ", email='" + email + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
                 ", active=" + active +
-                ", dob=" + dob +
                 ", dor=" + dor +
-                ", phoneNumber='" + phoneNumber + '\'' +
                 ", rolez=" + rolez +
                 '}';
     }

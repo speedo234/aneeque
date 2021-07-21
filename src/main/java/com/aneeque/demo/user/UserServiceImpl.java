@@ -3,6 +3,7 @@ package com.aneeque.demo.user;
 
 import com.aneeque.demo.api.util.CustomUtil;
 import com.aneeque.demo.exception.ApplicationException;
+import com.aneeque.demo.exception.AuthenticationException;
 import com.aneeque.demo.exception.EntityNotFoundException;
 import com.aneeque.demo.exception.ValidationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -62,10 +63,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email);
     }
 
-    @Override
-    public User getUserByPhoneNumber(String phoneNumber) {
-        return userRepository.findByPhoneNumber(phoneNumber);
-    }
 
     @Override
     public User getUserByUsernameAndPassword(String username, String password) {
@@ -73,17 +70,17 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUsernameOrEmail(username, email);
 
         if(user == null)
-            throw new ValidationException("invalid username");
+            throw new AuthenticationException("invalid username");
 
             boolean isCorrectPassword = bCryptPasswordEncoder.matches(password, user.getPassword());
             if (!isCorrectPassword)
-                throw new ValidationException("invalid password");
+                throw new AuthenticationException("invalid password");
 
         return user;
     }
 
     @Override
-    public void addUser(SignUpCmd signUpCmd) {
+    public User addUser(SignUpCmd signUpCmd) {
         User newRegisteredUser = new User();
         newRegisteredUser.setUsername(signUpCmd.getUsername());
         newRegisteredUser.setPassword(bCryptPasswordEncoder.encode(signUpCmd.getPassword()));
@@ -92,66 +89,15 @@ public class UserServiceImpl implements UserService {
         newRegisteredUser.setActive(signUpCmd.isActive());
         newRegisteredUser.setRolez(signUpCmd.getRolez());
         newRegisteredUser.setActive(signUpCmd.isActive());
-        /*return*/ userRepository.save(newRegisteredUser);
+        return userRepository.save(newRegisteredUser);
     }
 
 
 
-    @Override
-    public User updateUser(UserCmd userRequestCmd) throws EntityNotFoundException {
-        User updateUser = userRepository.findByUsername(userRequestCmd.getUsername());
-        if(updateUser == null){
-            throw new EntityNotFoundException(userRequestCmd.getUsername()+" was not found on the system");
-        }
-        if (userRequestCmd.getPassword() != null) {
-            updateUser.setPassword(bCryptPasswordEncoder.encode(userRequestCmd.getPassword()));
-        }
-        if (userRequestCmd.getFirstName() != null) {
-            updateUser.setFirstName(userRequestCmd.getFirstName().trim());
-        }
-        if (userRequestCmd.getLastName() != null) {
-            updateUser.setLastName(userRequestCmd.getLastName().trim());
-        }
-        if (userRequestCmd.getEmail() != null) {
-            updateUser.setEmail(userRequestCmd.getEmail());
-        }
-        if (userRequestCmd.getPhoneNumber() != null) {
-            updateUser.setPhoneNumber(userRequestCmd.getPhoneNumber().trim());
-        }
-
-/*        if (userRequestCmd.getRolez() != null) {
-            updateUser.setRolez(userRequestCmd.getRolez());
-        }*/
-
-        if (userRequestCmd.getDob() != null) {
-            updateUser.setDob(userRequestCmd.getDob());
-        }
-        if (userRequestCmd.getDor() != null) {
-            updateUser.setDor(userRequestCmd.getDor());
-        }
-
-        /*if (userRequestCmd.getViews() != null) {
-            updateUser.setViews(userRequestCmd.getViews());
-        }*/
-
-        if (userRequestCmd.getRolez() != null) {//cross check this condition to confirm it does not break anything...
-            logger.info("getRolez is not null... so save rolez data...");
-            updateUser.getRolez().clear();
-            updateUser.getRolez().addAll(userRequestCmd.getRolez());
-//            updateUser.setRolez(userRequestCmd.getRolez());
-        }
-        try {
-            updateUser.setActive(userRequestCmd.isActive());
-
-        } catch (NullPointerException npe) {
-            logger.info("NullPointerException npe : {}", npe);
-        }
-        return userRepository.save(updateUser);
-    }
 
 
     @Override
-    public void addUser2(SignUpCmd signUpCmd) throws ApplicationException {
+    public User addUser2(SignUpCmd signUpCmd) throws ApplicationException {
         User user = getUserByUsername(signUpCmd.getUsername());
         if (user != null)
             throw new ApplicationException("user "+signUpCmd.getUsername()+" already exists on the system");
@@ -159,7 +105,12 @@ public class UserServiceImpl implements UserService {
         if (user != null)
             throw new ApplicationException("email "+signUpCmd.getEmail()+" already exists on the system");
         signUpCmd.setActive(true);
-        addUser(signUpCmd);
+        return addUser(signUpCmd);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
 

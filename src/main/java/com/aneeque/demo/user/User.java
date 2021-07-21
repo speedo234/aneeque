@@ -30,22 +30,15 @@ public class User {
     @Column(unique=true)
     private String email;
 
-    private String firstName;
-    private String lastName;
-
+    @JsonIgnore
     private boolean active;
-
-    @Past(message = "Date of Birth Must be a Past Date.")
-    @DateTimeFormat(pattern = "dd-MM-yyyy'T'HH:mm:ss")
-    private LocalDate dob;
 
     @PastOrPresent(message = "Date of Registration Must be a Past or Present Date.")
     @DateTimeFormat(pattern = "dd-MM-yyyy'T'HH:mm:ss")
     private LocalDate dor;
 
-    @Column(unique=true)
-    private String phoneNumber;
 
+    @JsonIgnore
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Rolez> rolez;
 
@@ -54,12 +47,10 @@ public class User {
     }
 
     public User(@Pattern(regexp = "^[a-zA-Z0-9_]*$", message = "Invalid character in username") String username,
-                String password, String email, String firstName, String lastName) {
+                String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
     }
 
 
@@ -87,23 +78,6 @@ public class User {
         this.email = email;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-
     public List<Rolez> getRolez() {
         return rolez;
     }
@@ -120,14 +94,6 @@ public class User {
         this.active = active;
     }
 
-    public LocalDate getDob() {
-        return dob;
-    }
-
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
-    }
-
     public LocalDate getDor() {
         return dor;
     }
@@ -136,13 +102,6 @@ public class User {
         this.dor = dor;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
 
     @Override
     public String toString() {
@@ -151,8 +110,6 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
                 '}';
     }
 

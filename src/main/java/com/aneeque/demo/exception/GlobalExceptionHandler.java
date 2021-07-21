@@ -27,6 +27,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.ok(errorDetails);
     }
 
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<?> handleApplicationException(AuthenticationException exception, HttpServletResponse response, WebRequest request) throws IOException{
+        ErrorDetails errorDetails = new ErrorDetails(new Date(), HttpServletResponse.SC_UNAUTHORIZED, HttpStatus.UNAUTHORIZED.toString(), exception.getMessage(), request.getDescription(false));
+        return ResponseEntity.ok(errorDetails);
+    }
+
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException exception, HttpServletResponse response, WebRequest request) throws IOException{
         ErrorDetails errorDetails = new ErrorDetails(new Date(), HttpServletResponse.SC_NOT_FOUND, HttpStatus.NOT_FOUND.toString(), exception.getMessage(), request.getDescription(false));

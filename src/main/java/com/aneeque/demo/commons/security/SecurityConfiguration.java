@@ -1,6 +1,5 @@
 package com.aneeque.demo.commons.security;
 
-import com.aneeque.demo.api.filter.AdminJwtRequestFilter;
 import com.aneeque.demo.api.filter.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,9 +50,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new WebMvcConfigurerAdapter() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                //registry.addMapping("/api/**")
                 registry.addMapping("/**")
-//                        .allowedOrigins(corsAllowedOrigins)
+//                        .allowedOrigins(corsAllowedOrigins) //disabled to allow testing with postman
                         .allowedMethods("GET", "POST", "PUT", "DELETE");
             }
         };
@@ -62,7 +60,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     public BCryptPasswordEncoder getBCryptPasswordEncoder() {
-        // return NoOpPasswordEncoder.getInstance();
         return new BCryptPasswordEncoder();
     }
 
@@ -80,15 +77,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public FilterRegistrationBean<JwtRequestFilter> jwtRequestFilter() {
         FilterRegistrationBean<JwtRequestFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new JwtRequestFilter());
-        registrationBean.addUrlPatterns("/api/user/secure/*");
-        return registrationBean;
-    }
-
-    @Bean
-    public FilterRegistrationBean<AdminJwtRequestFilter> adminJwtRequestFilter() {
-        FilterRegistrationBean<AdminJwtRequestFilter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new AdminJwtRequestFilter());
-        registrationBean.addUrlPatterns("/api/admin/secure/*");
+        registrationBean.addUrlPatterns("/api/user/*");
         return registrationBean;
     }
 
