@@ -40,7 +40,7 @@ public class SignUpCmd {
     @Column(unique=true)
     @NotBlank(message = "Email field is empty")
     @NotEmpty(message = "Email field is empty")
-    @Size(min = 4, max = 15, message = "Email must be between 4 and 15 characters")
+//    @Size(min = 4, max = 15, message = "Email must be between 4 and 15 characters")
     private String email;
 
     private boolean active;

@@ -14,10 +14,14 @@ public interface UserService {
 
     User getUserByUsernameAndPassword(String username, String password);
 
-    User addUser(SignUpCmd signUpCmd);
-
-    User addUser2(SignUpCmd signUpCmd) throws ApplicationException;
+    User addUser(User signUpUser);
 
     List<User> getAllUsers();
+
+    void deleteAllUsers();
+
+    void deleteUser(String username);
+
+    User getUser(String username);
 
 }

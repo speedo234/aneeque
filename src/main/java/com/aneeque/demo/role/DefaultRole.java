@@ -8,6 +8,7 @@ package com.aneeque.demo.role;
 import com.aneeque.demo.user.User;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -15,19 +16,7 @@ import java.util.Objects;
  */
 
 @Entity
-public class DefaultRole extends Rolez {
-
-
-/*    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
-    private String roleName;
-    private String privilege;
-    private boolean active;*/
-
-
-/*    @ManyToOne
-    private User user;*/
+public class DefaultRole extends Rolez implements Serializable {
 
 
     public DefaultRole() {

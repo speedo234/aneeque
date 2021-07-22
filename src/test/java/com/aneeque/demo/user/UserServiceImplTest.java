@@ -82,9 +82,10 @@ class UserServiceImplTest {
         signUpCmd.setUsername(username);
         signUpCmd.setPassword(password);
         signUpCmd.setEmail(email);
+        User signUpUser = new User(signUpCmd);
         //when
         when(userRepository.save(user)).thenReturn(user);
-        User actual = userService.addUser(signUpCmd);
+        User actual = userService.addUser(signUpUser);
         User expected = user;
         //then
         assertThat(expected).isEqualTo(actual);
@@ -97,10 +98,11 @@ class UserServiceImplTest {
         signUpCmd.setUsername(username);
         signUpCmd.setPassword(password);
         signUpCmd.setEmail(email);
+        User signUpUser = new User(signUpCmd);
         //when
         when(userService.getUserByUsername(username)).thenReturn(null);
-        when(userService.addUser(signUpCmd)).thenReturn(user);
-        User actual = userService.addUser2(signUpCmd);
+        when(userService.addUser(signUpUser)).thenReturn(user);
+        User actual = userService.addUser(signUpUser);
         User expected = user;
         //then
         assertThat(expected).isEqualTo(actual);

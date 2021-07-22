@@ -6,15 +6,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class User {
+public class User implements Serializable {
+
+    private static final long serialVersionUID = 137214104940822792L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +28,10 @@ public class User {
 
     @JsonIgnore
     private String password;
+
+    @JsonIgnore
+    @Transient
+    private String confirmPassword;
 
     @Column(unique=true)
     private String email;
@@ -42,8 +48,39 @@ public class User {
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Rolez> rolez;
 
+    public User() {}
 
-    public User() {
+    public User(SignUpCmd signUpCmd) {
+        if(signUpCmd.getUsername() != null)
+            this.username =  signUpCmd.getUsername();
+        if(signUpCmd.getPassword() != null)
+            this.password =  signUpCmd.getPassword();
+        if(signUpCmd.getConfirmPassword() != null)
+            this.confirmPassword =  signUpCmd.getConfirmPassword();
+        if(signUpCmd.getEmail() != null)
+            this.email =  signUpCmd.getEmail();
+        if(signUpCmd.isActive())
+            this.active =  signUpCmd.isActive();
+        if(signUpCmd.getDor() == null)
+            this.dor =  LocalDate.now();
+        if(signUpCmd.getRolez() != null)
+            this.rolez = signUpCmd.getRolez();
+    }
+
+
+    public User(UserCmd userCmd) {
+        if(userCmd.getUsername() != null)
+            this.username = userCmd.getUsername();
+        if(userCmd.getPassword() != null)
+            this.password = userCmd.getPassword();
+        if(userCmd.getEmail() != null)
+            this.email = userCmd.getEmail();
+        if(userCmd.isActive())
+            this.active = userCmd.isActive();
+        if(userCmd.getDor() != null)
+            this.dor = userCmd.getDor();
+        if(userCmd.getRolez() != null)
+            this.rolez = userCmd.getRolez();
     }
 
     public User(@Pattern(regexp = "^[a-zA-Z0-9_]*$", message = "Invalid character in username") String username,
@@ -53,6 +90,13 @@ public class User {
         this.email = email;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
@@ -68,6 +112,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 
     public String getEmail() {

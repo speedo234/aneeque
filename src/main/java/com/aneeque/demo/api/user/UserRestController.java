@@ -14,12 +14,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -65,7 +63,7 @@ public class UserRestController {
         customUtil.isValidEmail(signUpCmd.getEmail());
         userUtil.checkPasswordsMatch(signUpCmd.getPassword(), signUpCmd.getConfirmPassword());
         userUtil.setDefaultUserRole(signUpCmd);
-        User user = userService.addUser2(signUpCmd);
+        User user = userService.addUser(new User(signUpCmd));
         String jwt = jwtUtil.generateToken(new UserDetailsImpl(user));
         returnObjectNode.put("jwt", jwt);
         returnObjectNode.put("username", signUpCmd.getUsername());
@@ -73,10 +71,32 @@ public class UserRestController {
     }
 
 
+    @GetMapping("/api/user/{username}")
+    public ResponseEntity<?> getUser(@PathVariable String username) {
+        User user = userService.getUser(username);
+        List<User> userList = new ArrayList<>();
+        userList.add(user);
+        return ResponseEntity.ok(userList);
+    }
+
+
     @GetMapping("/api/user/all")
     public ResponseEntity<?> getAllUsers() {
         List<User> userList = userService.getAllUsers();
         return ResponseEntity.ok(userList);
+    }
+
+
+    @DeleteMapping("/api/user/delete/{username}")
+    public ResponseEntity<?> deleteUser(@PathVariable String username) {
+        userService.deleteUser(username);
+        return ResponseEntity.ok("success");
+    }
+
+    @DeleteMapping("/api/user/delete/all")
+    public ResponseEntity<?> deleteAllUsers() {
+        userService.deleteAllUsers();
+        return ResponseEntity.ok("success");
     }
 
 }
