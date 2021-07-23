@@ -10,11 +10,11 @@ package com.aneeque.demo.api.authenticate;
 import com.aneeque.demo.api.util.CustomUtil;
 import com.aneeque.demo.api.util.JwtUtil;
 import com.aneeque.demo.commons.security.UserDetailsImpl;
-import com.aneeque.demo.exception.AuthenticationException;
 import com.aneeque.demo.exception.ValidationException;
 import com.aneeque.demo.role.Rolez;
 import com.aneeque.demo.user.User;
 import com.aneeque.demo.user.UserService;
+import com.aneeque.demo.user.UserServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -28,21 +28,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-
 //import org.json.JSONObject;
 
 /**
  * @author Isidienu Chudi
  */
 @RestController
-//@RequestMapping("/api")
 public class AuthenticateController {
 
     static final Logger logger = LoggerFactory.getLogger(AuthenticateController.class);
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Autowired
     private CustomUtil customUtil;
@@ -51,7 +48,9 @@ public class AuthenticateController {
     private JwtUtil jwtUtil;
 
 
-
+    public AuthenticateController(UserServiceImpl userServiceImpl) {
+        this.userService = userServiceImpl;
+    }
 
     @PostMapping("/api/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@Validated @RequestBody AuthenticateRequestCmd authenticateRequestCmd,

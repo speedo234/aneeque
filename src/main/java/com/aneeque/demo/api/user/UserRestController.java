@@ -27,9 +27,7 @@ public class UserRestController {
     static final Logger logger = LoggerFactory.getLogger(UserRestController.class);
 
     @Autowired
-    private UserService userService;
-
-
+    private UserServiceImpl userService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -51,7 +49,14 @@ public class UserRestController {
     String corsAllowedOrigins;
 
 
-    @PostMapping("/api/signup")
+    public UserRestController(UserServiceImpl userService, CustomUtil customUtil, UserUtil userUtil, JwtUtil jwtUtil) {
+        this.userService = userService;
+        this.customUtil = customUtil;
+        this.userUtil = userUtil;
+        this.jwtUtil = jwtUtil;
+    }
+
+    @PutMapping("/api/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignUpCmd signUpCmd, BindingResult result) {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode returnObjectNode = mapper.createObjectNode();
@@ -90,13 +95,13 @@ public class UserRestController {
     @DeleteMapping("/api/user/delete/{username}")
     public ResponseEntity<?> deleteUser(@PathVariable String username) {
         userService.deleteUser(username);
-        return ResponseEntity.ok("success");
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/api/user/delete/all")
     public ResponseEntity<?> deleteAllUsers() {
         userService.deleteAllUsers();
-        return ResponseEntity.ok("success");
+        return ResponseEntity.noContent().build();
     }
 
 }

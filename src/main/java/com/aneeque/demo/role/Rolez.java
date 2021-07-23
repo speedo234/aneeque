@@ -6,6 +6,10 @@
 package com.aneeque.demo.role;
 
 import com.aneeque.demo.user.User;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 
 import javax.persistence.*;
@@ -15,6 +19,15 @@ import java.util.Objects;
  * @author Isidienu Chudi
  */
 
+
+//@JsonDeserialize(as = DefaultRole.class)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = DefaultRole.class, name = "defaultRole"),
+})
 @Entity
 public abstract class Rolez {
 
@@ -29,6 +42,9 @@ public abstract class Rolez {
     @ManyToOne
     protected User user;
 
+
+    public Rolez() {
+    }
 
     public abstract String getRoleName();
 

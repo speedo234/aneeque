@@ -6,6 +6,7 @@
 package com.aneeque.demo.role;
 
 import com.aneeque.demo.user.User;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -16,6 +17,7 @@ import java.util.Objects;
  */
 
 @Entity
+@JsonPropertyOrder({"name", "id"})
 public class DefaultRole extends Rolez implements Serializable {
 
 
