@@ -10,9 +10,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.springframework.cache.annotation.CacheConfig;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -26,10 +28,10 @@ import java.util.Objects;
         include = JsonTypeInfo.As.PROPERTY,
         property = "type")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = DefaultRole.class, name = "defaultRole"),
+        @JsonSubTypes.Type(value = DefaultRole.class, name = "defaultRole")
 })
 @Entity
-public abstract class Rolez {
+public abstract class Rolez implements Serializable {
 
 
     @Id

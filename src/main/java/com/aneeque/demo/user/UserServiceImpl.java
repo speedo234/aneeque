@@ -54,14 +54,16 @@ public class UserServiceImpl implements UserService {
     @Override
     @Cacheable(value = redisCacheValue, key = "#username")
     public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
+        return user;
     }
 
 
     @Override
     @Cacheable(value = redisCacheValue, key = "#email")
     public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email);
+        return user;
     }
 
 
@@ -95,13 +97,19 @@ public class UserServiceImpl implements UserService {
     @Override
     @Cacheable(value = redisCacheValue, key = "#username")
     public User getUser(String username) {
-        return userRepository.findByUsername(username);
+        User user = userRepository.findByUsername(username);
+        if(user == null)
+            throw new EntityNotFoundException("user does not exist");
+        return user;
     }
 
     @Override
     @CacheEvict(value = redisCacheValue, allEntries = true)
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        List<User> userList = userRepository.findAll();
+        if(userList.size() == 0)
+            throw new EntityNotFoundException("No user exists.");
+        return userList;
     }
 
 

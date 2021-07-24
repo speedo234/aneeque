@@ -18,7 +18,9 @@ import java.util.Objects;
 
 @Entity
 @JsonPropertyOrder({"name", "id"})
-public class DefaultRole extends Rolez implements Serializable {
+public class DefaultRole extends Rolez {
+
+    private static final long serialVersionUID = 8584634720322154831L;
 
 
     public DefaultRole() {

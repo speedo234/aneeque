@@ -17,10 +17,10 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-class UserRepositoryTest {
+class UserRepositoryUnitTest {
 
 
-    static final Logger logger = LoggerFactory.getLogger(UserRepositoryTest.class);
+    static final Logger logger = LoggerFactory.getLogger(UserRepositoryUnitTest.class);
 
     @Autowired
     UserRepository userRepository;

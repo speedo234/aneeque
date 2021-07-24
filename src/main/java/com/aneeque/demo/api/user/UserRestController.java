@@ -56,7 +56,7 @@ public class UserRestController {
         this.jwtUtil = jwtUtil;
     }
 
-    @PutMapping("/api/signup")
+    @PostMapping("/api/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignUpCmd signUpCmd, BindingResult result) {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode returnObjectNode = mapper.createObjectNode();
@@ -79,9 +79,7 @@ public class UserRestController {
     @GetMapping("/api/user/{username}")
     public ResponseEntity<?> getUser(@PathVariable String username) {
         User user = userService.getUser(username);
-        List<User> userList = new ArrayList<>();
-        userList.add(user);
-        return ResponseEntity.ok(userList);
+        return ResponseEntity.ok(user);
     }
 
 

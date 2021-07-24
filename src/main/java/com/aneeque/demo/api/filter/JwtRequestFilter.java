@@ -60,6 +60,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             if(!claims.toString().contains("ROLE_USER"))
                 response.sendError((HttpServletResponse.SC_FORBIDDEN), "Unauthorized Role Access");
         } catch (SignatureException se) {
+            logger.info("SignatureException here....>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             se.printStackTrace();
             response.sendError((HttpServletResponse.SC_UNAUTHORIZED), "Invalid Authorization Token");
             return;

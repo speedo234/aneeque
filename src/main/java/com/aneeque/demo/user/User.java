@@ -44,7 +44,7 @@ public class User implements Serializable {
     private LocalDate dor;
 
 
-    @JsonIgnore
+//    @JsonIgnore
     @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Rolez> rolez;
 

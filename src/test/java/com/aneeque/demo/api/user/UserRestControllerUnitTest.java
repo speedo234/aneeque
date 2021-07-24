@@ -13,8 +13,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -32,8 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 
-@WebMvcTest
-public class UserRestControllerTest {
+
+public class UserRestControllerUnitTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -53,10 +55,10 @@ public class UserRestControllerTest {
     @MockBean
     private UserServiceImpl userService;
 
-    @Autowired
+    @InjectMocks
     private UserRestController userRestController;
 
-    private String signupEndpoint = "http://localhost:8089/api/signup";
+    private String baseEndpoint = "http://localhost:8089/api";
 
     SignUpCmd signUpCmd = null;
     List<Rolez> rolezList = null;
@@ -85,14 +87,13 @@ public class UserRestControllerTest {
 
     @Test
     void signup() throws Exception {
-
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         User user = new User(signUpCmd);
         //when
         when(userService.addUser(user)).thenReturn(new User(signUpCmd));
         mockMvc.perform(
-                put(signupEndpoint)
+                post(baseEndpoint+"/signup")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(signUpCmd)) )
                 .andExpect(status().isOk());
@@ -101,48 +102,36 @@ public class UserRestControllerTest {
     @Test
     void getUser() throws Exception {
         String username = "speedo";
-        //when
-        when(userService.getUser(username)).thenReturn(new User(signUpCmd));
+
+        when(userService.getUser(username)).thenReturn(new User());
+
         mockMvc.perform(
-                get("http://localhost:8089/api/user/speedo")
+                get("http://localhost:8089/api/user/xxxxx")
                         .contentType(MediaType.APPLICATION_JSON) )
                 .andExpect(status().isOk());
     }
 
     @Test
     void getAllUsers() throws Exception {
-        User user = new User(signUpCmd);
-        List<User> userList = new ArrayList<>();
-        userList.add(user);
-        //when
-        when(userService.getAllUsers()).thenReturn(userList);
         mockMvc.perform(
-                get("http://localhost:8089/api/user/all")
+                get(baseEndpoint+"/user/all")
                         .contentType(MediaType.APPLICATION_JSON) )
                 .andExpect(status().isOk());
     }
 
     @Test
     void deleteUser() throws Exception {
-//        User user = new User(signUpCmd);
-//        List<User> userList = new ArrayList<>();
-//        userList.add(user);
-
         mockMvc.perform(
-                delete("http://localhost:8089/api/user/delete/speedoxsdfhj")
+                delete(baseEndpoint+"/user/delete/speedoxsdfhj")
                         .contentType(MediaType.APPLICATION_JSON) )
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
     void deleteAllUsers() throws Exception {
-        User user = new User(signUpCmd);
-        List<User> userList = new ArrayList<>();
-        userList.add(user);
-
         mockMvc.perform(
-                delete("http://localhost:8089/api/user/delete/all")
+                delete(baseEndpoint+"/user/delete/all")
                         .contentType(MediaType.APPLICATION_JSON) )
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 }
