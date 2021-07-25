@@ -32,16 +32,15 @@ class UserServiceImplUnitTest {
     private String username = null;
     private String password = null;
     private String email = null;
-
     private User user = null;
 
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        username = "glory";
-        password = "tar565";
-        email = "glory@yahoo.com";
+        username = "user";
+        password = "userpw";
+        email = "user@yahoo.com";
         user = new User(username, password, email);
         userService = new UserServiceImpl(userRepository, bCryptPasswordEncoder);
     }

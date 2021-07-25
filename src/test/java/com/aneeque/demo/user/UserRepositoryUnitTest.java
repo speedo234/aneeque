@@ -36,9 +36,9 @@ class UserRepositoryUnitTest {
     @BeforeEach
     void setUp(){
         MockitoAnnotations.initMocks(this);
-        username = "glory";
-        password = "glory";
-        email = "glory@yahoo.com";
+        username = "user";
+        password = "userpw";
+        email = "user@yahoo.com";
         rolezList = new ArrayList<>();
         role = new DefaultRole();
         //
