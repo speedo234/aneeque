@@ -19,18 +19,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 class UserRepositoryUnitTest {
 
-
     static final Logger logger = LoggerFactory.getLogger(UserRepositoryUnitTest.class);
 
     @Autowired
     UserRepository userRepository;
 
 
-    String username = null;
-    String password = null;
-    String email = null;
-    List<Rolez> rolezList = null;
-    Rolez role = null;
+    private static String username = null;
+    private static String password = null;
+    private static String email = null;
+    private static List<Rolez> rolezList = null;
+    private static Rolez role = null;
 
 
     @BeforeEach

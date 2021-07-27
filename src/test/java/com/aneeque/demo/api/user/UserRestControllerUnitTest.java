@@ -66,10 +66,13 @@ public class UserRestControllerUnitTest {
 
     private String baseEndpoint = "http://localhost:8089/api";
 
-    SignUpCmd signUpCmd = null;
-    List<Rolez> rolezList = null;
+    private static SignUpCmd signUpCmd = null;
+    private static List<Rolez> rolezList = null;
 
-    String jwt = "qwertyx";
+    String jwt = "qwerty";
+    private static String username = "test_user";
+    private static String password = "test_password";
+    private static String email = "test@email.com";
 
 
     @BeforeEach
@@ -84,11 +87,11 @@ public class UserRestControllerUnitTest {
         mockMvc = MockMvcBuilders.standaloneSetup(userRestController).build();
         //
         signUpCmd = new SignUpCmd();
-        signUpCmd.setUsername("speedo");
-        signUpCmd.setPassword("abcd");
-        signUpCmd.setConfirmPassword("abcd");
+        signUpCmd.setUsername(username);
+        signUpCmd.setPassword(password);
+        signUpCmd.setConfirmPassword(password);
         signUpCmd.setDor(LocalDate.now());
-        signUpCmd.setEmail("talk2speedy@yahoo.com");
+        signUpCmd.setEmail(email);
         rolezList = new ArrayList<Rolez>();
         rolezList.add(new DefaultRole());
         signUpCmd.setRolez(rolezList);
@@ -101,7 +104,7 @@ public class UserRestControllerUnitTest {
         User user = new User(signUpCmd);
         //when
         when(userService.addUser(user)).thenReturn(user);
-        when(jwtUtil.generateToken(userDetails)).thenReturn("help");
+        when(jwtUtil.generateToken(userDetails)).thenReturn(jwt);
         MvcResult mvcResult = mockMvc.perform(
                 post(baseEndpoint+"/signup")
                         .contentType(MediaType.APPLICATION_JSON)

@@ -5,10 +5,7 @@ import com.aneeque.demo.role.Rolez;
 import com.aneeque.demo.user.SignUpCmd;
 import com.aneeque.demo.user.User;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -36,6 +33,11 @@ public class UserRestControllerIntegrationTest {
     private static String username = "test_user";
     private static String password = "test_password";
     private static String email = "test@email.com";
+
+
+    @BeforeEach
+    void setUp() { }
+
 
     @Test
     @Order(1)
@@ -65,16 +67,18 @@ public class UserRestControllerIntegrationTest {
     @Test
     @Order(2)
     void getUser() {
+
+        signup();
+
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(jwt);
         headers.setContentType(MediaType.APPLICATION_JSON);
         //
         HttpEntity<String> request = new HttpEntity<String>(headers);
         String getUserEndPoint = "http://localhost:"+port+"/api/user/"+username;
+
         ResponseEntity<User> actual = testRestTemplate.exchange(getUserEndPoint, HttpMethod.GET, request, User.class);
         assertThat(actual).isNotNull();
-
-        System.out.println("actual-->> "+actual);
 
         User actualUser = actual.getBody();
         assertThat(actualUser).isNotNull();
@@ -112,10 +116,8 @@ public class UserRestControllerIntegrationTest {
         String deleteUserEndPoint = "http://localhost:"+port+"/api/user/delete/"+username;
         ResponseEntity<String> actual = testRestTemplate.exchange(deleteUserEndPoint, HttpMethod.DELETE, request, String.class);
 
-        System.out.println("<<1>>"+actual);
-
         assertThat(actual).isNotNull();
-//        assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
+        assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
     }
 
     @Test
