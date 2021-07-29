@@ -41,7 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .and().formLogin();
         http.cors();
-        http.headers().frameOptions().disable();//uncomment for h2 database
+//        http.headers().frameOptions().disable();//uncomment for h2 database
     }
 
 
