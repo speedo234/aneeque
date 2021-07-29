@@ -19,4 +19,9 @@ services:
                     MYSQL_ROOT_PASSWORD: mysql
                     MYSQL_DATABASE: aneeque_db
                     MYSQL_ROOT_HOST: "%"
+          cache:
+            container_name: aneeque_cache_container
+            image: redis:alpine
+            ports:
+            - "6379:6379"
 
